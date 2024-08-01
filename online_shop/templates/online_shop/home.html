@@ -20,7 +20,7 @@
 <!-- Navigation-->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container px-4 px-lg-5">
-        <a class="navbar-brand" href="#!">Start Bootstrap</a>
+        <a class="navbar-brand" href="{% url 'product_list' %}">Start Bootstrap</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
                 class="navbar-toggler-icon"></span></button>
@@ -32,20 +32,12 @@
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">Categories</a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">Смартфоны, телефоны, гаджеты, аксессуары 📱</a></li>
+                        {% for category in categories %}
+                        <li><a class="dropdown-item" href="{% url 'category_detail_id' category.id %}">{{ category.title }}</a></li>
+                        {% endfor %}
                         <li>
                             <hr class="dropdown-divider"/>
                         </li>
-                        <li><a class="dropdown-item" href="#!">Бытовая техника 📺 </a></li>
-                        <li>
-                            <hr class="dropdown-divider"/>
-                        </li>
-                        <li><a class="dropdown-item" href="#!">Ноутбуки, принтеры, компьютеры 💻 </a></li>
-                        <li>
-                            <hr class="dropdown-divider"/>
-                        </li>
-
-
                     </ul>
                 </li>
             </ul>

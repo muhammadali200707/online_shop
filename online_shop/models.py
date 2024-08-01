@@ -4,6 +4,9 @@ from django.db import models
 class Category(models.Model):
     title = models.CharField(max_length=70)
 
+    class Meta:
+        verbose_name_plural = 'Categories'
+
     def __str__(self):
         return self.title
 
@@ -46,20 +49,22 @@ class Product(models.Model):
         return self.name
 
 
-class Comment(models.Model):
-    name = models.CharField(max_length=80)
-    email = models.CharField(max_length=100)
-    product = models.ForeignKey('Product', on_delete=models.CASCADE, related_name='comments')
-    comment = models.TextField()
-
-    def __str__(self):
-        return f" {self.product} commented from {self.name}"
-
-
 class Order(models.Model):
     name = models.CharField(max_length=80)
     product = models.ForeignKey('Product', on_delete=models.CASCADE, related_name='order')
-    phone_number = models.SmallIntegerField()
+    phone_number = models.BigIntegerField()
 
     def __str__(self):
         return f"{self.name} ordered , this person's phone number {self.phone_number}"
+
+
+class Comment(models.Model):
+    name = models.CharField(max_length=80)
+    email = models.EmailField(max_length=100)
+    product = models.ForeignKey('Product', on_delete=models.CASCADE, related_name='comments')
+    body = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_provide = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f" {self.product} commented by {self.name}"
