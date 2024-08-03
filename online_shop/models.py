@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Category(models.Model):
-    title = models.CharField(max_length=70)
+    title = models.CharField(max_length=70, unique=True)
 
     class Meta:
         verbose_name_plural = 'Categories'
@@ -52,10 +52,11 @@ class Product(models.Model):
 class Order(models.Model):
     name = models.CharField(max_length=80)
     product = models.ForeignKey('Product', on_delete=models.CASCADE, related_name='order')
-    phone_number = models.BigIntegerField()
+    phone = models.BigIntegerField()
+    quantity = models.IntegerField(default=0)
 
     def __str__(self):
-        return f"{self.name} ordered , this person's phone number {self.phone_number}"
+        return f"{self.name} ordered , this person's phone number {self.phone}"
 
 
 class Comment(models.Model):
@@ -63,8 +64,8 @@ class Comment(models.Model):
     email = models.EmailField(max_length=100)
     product = models.ForeignKey('Product', on_delete=models.CASCADE, related_name='comments')
     body = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
     is_provide = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f" {self.product} commented by {self.name}"

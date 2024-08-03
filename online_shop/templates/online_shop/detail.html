@@ -66,7 +66,15 @@
 
             </div>
             <div class="col-md-6">
-                <div class="small mb-1">Quantity: {{ product.quantity }}</div>
+                <div class="small mb-1">Quantity : {{ product.quantity }}</div>
+                <div>
+                    <a href="{% url 'delete_product' product.id %}">
+                        <button type="button" class="btn btn-danger">Delete</button>
+                    </a>
+                    <a href="{% url 'edit_product' product.id %}">
+                        <button type="button" class="btn btn-secondary">Edit</button>
+                    </a>
+                </div>
                 <h1 class="display-5 fw-bolder">{{ product.name }}</h1>
                 <div class="fs-5 mb-5">
                     {% if product.discount %}
@@ -75,6 +83,7 @@
                     {% else %}
                         ${{ product.price }}
                     {% endif %}
+
                 </div>
                 <p class="lead">{{ product.description }}</p>
                 <div class="d-flex">
@@ -83,13 +92,29 @@
                         <div class="form-group">
                             <h2>Place an order</h2>
                         </div>
+                        <div>
+                            <ul>
+                                {% for message in messages %}
+                                    {% if 'error' in message.tags %}
+                                        <li style="color: red">{{ message }}</li>
+                                    {% elif 'success' in message.tags %}
+                                        <li style="color: green">{{ message }}</li>
+                                    {% endif %}
+
+                                {% endfor %}
+                            </ul>
+                        </div>
                         <div class="form-group mb-3">
                             <label for="formGroupExampleInput">Your name</label>
-                            <input type="text" class="form-control" name = "name" placeholder="Your name">
+                            <input type="text" class="form-control" name="name" placeholder="Your name">
                         </div>
                         <div class="form-group mb-3">
                             <label for="formGroupExampleInput2">Your phone</label>
-                            <input type="number" class="form-control" name = "number" placeholder="Your phone">
+                            <input type="text" class="form-control" name="phone" placeholder="Your phone">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="formGroupExampleInput2">Quantity</label>
+                            <input type="number" class="form-control" name="quantity" placeholder="Quantity">
                         </div>
 
 
@@ -112,13 +137,19 @@
                 <h2>Latest comments({{ product.comments.count }})</h2>
             </div>
             {% for comment in comments %}
+
                 <div class="media card p-4 mt-2">
                     <div class="media-body">
-                        <h3 class="mt-0">Name: {{ comment.name }} => Date : {{ comment.created_at }}</h3>
-                        <h3>Comment : {{ comment.body }}</h3>
+
+                        <h3 class="mt-0">{{ comment.name }} => {{ comment.created_at }}</h3>
+
+
+                        {{ comment.body }}
                     </div>
                 </div>
             {% endfor %}
+
+
         </div>
 
         <div class="col-8 offset-2 mt-5">
@@ -130,8 +161,8 @@
                 <div>
                     {% if form.errors %}
                         {% for field in form %}
-                            {% for error in field.errorr %}
-                                <div> class= "alert alert-danger">
+                            {% for error in field.errors %}
+                                <div class="alert alert-danger">
                                     <strong>{{ error|escape }}</strong>
                                 </div>
                             {% endfor %}
@@ -187,8 +218,8 @@
                     </div>
                     <!-- Product actions-->
                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto"
-                                                    href="{% url 'product_detail' product.id %}">View product</a></div>
+                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="detail.html">View
+                            product</a></div>
 
 
                     </div>
@@ -212,8 +243,8 @@
                     </div>
                     <!-- Product actions-->
                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto"
-                                                    href="{% url 'product_detail' product.id %}">View product</a></div>
+                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="detail.html">View
+                            product</a></div>
 
 
                     </div>
@@ -236,8 +267,8 @@
                     </div>
                     <!-- Product actions-->
                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto"
-                                                    href="{% url 'product_detail' product.id %}">View product</a></div>
+                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="detail.html">View
+                            product</a></div>
 
 
                     </div>
@@ -260,8 +291,8 @@
                     </div>
                     <!-- Product actions-->
                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto"
-                                                    href="{% url 'product_detail' product.id %}">View product</a></div>
+                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="detail.html">View
+                            product</a></div>
 
 
                     </div>
