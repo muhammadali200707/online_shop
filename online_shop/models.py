@@ -1,14 +1,22 @@
 from django.db import models
+from django.utils.text import slugify
 
 
 class Category(models.Model):
     title = models.CharField(max_length=70, unique=True)
+    slug = models.SlugField(null=True, blank=True)
 
-    class Meta:
-        verbose_name_plural = 'Categories'
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super(Category, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        verbose_name_plural = 'Categories'
+        db_table = 'category'
 
 
 class Product(models.Model):
@@ -48,6 +56,9 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        db_table = 'product'
+
 
 class Order(models.Model):
     name = models.CharField(max_length=80)
@@ -57,6 +68,9 @@ class Order(models.Model):
 
     def __str__(self):
         return f"{self.name} ordered , this person's phone number {self.phone}"
+
+    class Meta:
+        db_table = 'order'
 
 
 class Comment(models.Model):
@@ -69,3 +83,6 @@ class Comment(models.Model):
 
     def __str__(self):
         return f" {self.product} commented by {self.name}"
+
+    class Meta:
+        db_table = 'comment'
