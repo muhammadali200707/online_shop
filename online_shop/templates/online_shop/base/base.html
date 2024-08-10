@@ -6,7 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="description" content=""/>
     <meta name="author" content=""/>
+
     <title>{% block title %} {% endblock %}</title>
+
+
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="{% static 'online_shop/assets/favicon.ico' %}"/>
     <!-- Bootstrap icons-->
@@ -50,8 +53,28 @@
 
                 </button>
             </form>
+
         </div>
+
     </div>
+    {% if user.is_authenticated %}
+        <form method="post" action="{% url 'logout_page' %}">
+            {% csrf_token %}
+            <div>
+
+                <button type="submit" class="btn btn-outline-danger">Logout</button>
+
+                <h4>{{ user.username }}</h4>
+
+            </div>
+        </form>
+    {% else %}
+        <div>
+            <a href="{% url 'login_page' %}">
+                <button type="button" class="btn btn-outline-primary">Login</button>
+            </a>
+        </div>
+    {% endif %}
 </nav>
 <!-- Header-->
 {% block main_content %}
