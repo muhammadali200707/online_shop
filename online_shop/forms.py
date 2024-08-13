@@ -1,7 +1,13 @@
 from django import forms
 from django.contrib.auth.models import User
+
 from online_shop.models import Comment, Order, Product
 
+
+# class CommentForm(forms.Form):
+#     name = forms.CharField(max_length=100)
+#     email = forms.EmailField()
+#     body = forms.CharField(widget=forms.Textarea)
 
 class CommentModelForm(forms.ModelForm):
     class Meta:
@@ -14,6 +20,13 @@ class CommentModelForm(forms.ModelForm):
         if Comment.objects.filter(email=email).exists():
             raise forms.ValidationError(f'This {email} is already used')
         return email
+
+    # def clean_body(self):
+    #     negative_message = ['']
+    #     body = self.data.get('body')
+    #     if negative_message in body.split(' '):
+    #         raise
+    #     return body
 
 
 class OrderModelForm(forms.ModelForm):
@@ -35,6 +48,38 @@ class LoginForm(forms.Form):
     # def clean_username(self):
     #     username = self.data.get('username')
     #     if not User.objects.filter(username=username).exists():
-    #         raise forms.ValidationError(f'Username {username} does not exist')
-    #
+    #         raise forms.ValidationError(f'That user {username} not found')
     #     return username
+
+
+class RegisterForm(forms.ModelForm):
+    confirm_password = forms.CharField(max_length=255)
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password')
+
+    def clean_username(self):
+        username = self.data.get('username')
+        if User.objects.filter(username=username).exists():
+            raise forms.ValidationError(f'This {username} is already exists')
+        return username
+
+    def clean_password(self):
+        password = self.data.get('password')
+        confirm_password = self.data.get('confirm_password')
+        if password != confirm_password:
+            raise forms.ValidationError('Passwords do not match')
+        return self.cleaned_data['password']
+
+    def save(self, commit=True):
+        user = super(RegisterForm, self).save(commit=False)
+        user.set_password(self.cleaned_data['password'])
+        user.is_active = True
+        user.is_superuser = True
+        user.is_staff = True
+
+        if commit:
+            user.save()
+
+        return user

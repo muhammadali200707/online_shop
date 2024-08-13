@@ -22,7 +22,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'auth/assets/img/favicons/favicon-16x16.png' %}">
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'auth/assets/img/favicons/favicon.ico' %}">
     <link rel="manifest" href="{% static 'auth/assets/img/favicons/manifest.json' %}">
-    <meta name="msapplication-TileImage" content="assets/img/favicons/mstile-150x150.png">
+    <meta name="msapplication-TileImage" content="{% static 'auth/assets/img/favicons/mstile-150x150.png' %}">
     <meta name="theme-color" content="#ffffff">
     <script src="{% static 'auth/assets/js/config.js' %}"></script>
     <script src="{% static 'auth/vendors/overlayscrollbars/OverlayScrollbars.min.js' %}"></script>
@@ -85,8 +85,19 @@
                         <div class="card">
                             <div class="card-header bg-circle-shape bg-shape text-center p-2"><a
                                     class="font-sans-serif fw-bolder fs-4 z-index-1 position-relative link-light light"
-                                    href="../../../index.html">falcon</a></div>
+                                    href="{% url 'product_list' %}">Online Shop</a></div>
                             <div class="card-body p-4">
+                                <div>
+                                    {% if form.errors %}
+                                        {% for field in form %}
+                                            {% for error in field.errors %}
+                                                <div class="alert alert-danger">
+                                                    <strong>{{ error|escape }}</strong>
+                                                </div>
+                                            {% endfor %}
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
                                 <div class="row flex-between-center">
                                     <div class="col-auto">
                                         <h3>Register</h3>
@@ -95,25 +106,30 @@
                                             class="mb-0 fw-semi-bold">Already User?</span> <span><a
                                             href="{% url 'login_page' %}">Login</a></span></div>
                                 </div>
-                                <form>
+                                <form method="post">
+                                    {% csrf_token %}
                                     <div class="mb-3">
-                                        <label class="form-label" for="split-name">Name</label>
-                                        <input class="form-control" type="text" autocomplete="on" id="split-name"/>
+                                        <label class="form-label" for="split-name">Username</label>
+                                        <input class="form-control" type="text" name="username" autocomplete="on"
+                                               id="split-name"/>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label" for="split-email">Email address</label>
-                                        <input class="form-control" type="email" autocomplete="on" id="split-email"/>
+                                        <input class="form-control" type="email" name="email" autocomplete="on"
+                                               id="split-email"/>
                                     </div>
                                     <div class="row gx-2">
                                         <div class="mb-3 col-sm-6">
                                             <label class="form-label" for="split-password">Password</label>
-                                            <input class="form-control" type="password" autocomplete="on"
+                                            <input class="form-control" type="password" name="password"
+                                                   autocomplete="on"
                                                    id="split-password"/>
                                         </div>
                                         <div class="mb-3 col-sm-6">
                                             <label class="form-label" for="split-confirm-password">Confirm
                                                 Password</label>
-                                            <input class="form-control" type="password" autocomplete="on"
+                                            <input class="form-control" type="password" name="confirm_password"
+                                                   autocomplete="on"
                                                    id="split-confirm-password"/>
                                         </div>
                                     </div>
@@ -175,7 +191,7 @@
                            data-theme-control="theme"/>
                     <label class="btn d-inline-block btn-navbar-style fs--1" for="themeSwitcherLight"> <span
                             class="hover-overlay mb-2 rounded d-block"><img class="img-fluid img-prototype mb-0"
-                                                                            src="assets/img/generic/falcon-mode-default.jpg"
+                                                                            src="{% static 'auth/assets/img/generic/falcon-mode-default.jpg' %}"
                                                                             alt=""/></span><span class="label-text">Light</span></label>
                 </div>
                 <div class="col-6">
@@ -183,7 +199,7 @@
                            data-theme-control="theme"/>
                     <label class="btn d-inline-block btn-navbar-style fs--1" for="themeSwitcherDark"> <span
                             class="hover-overlay mb-2 rounded d-block"><img class="img-fluid img-prototype mb-0"
-                                                                            src="assets/img/generic/falcon-mode-dark.jpg"
+                                                                            src="{% static 'auth/assets/img/generic/falcon-mode-dark.jpg' %}"
                                                                             alt=""/></span><span class="label-text"> Dark</span></label>
                 </div>
             </div>
@@ -260,29 +276,29 @@
                     <input class="btn-check" id="navbar-style-transparent" type="radio" name="navbarStyle"
                            value="transparent" data-theme-control="navbarStyle"/>
                     <label class="btn d-block w-100 btn-navbar-style fs--1" for="navbar-style-transparent"> <img
-                            class="img-fluid img-prototype" src="assets/img/generic/default.png" alt=""/><span
-                            class="label-text"> Transparent</span></label>
+                            class="img-fluid img-prototype" src="{% static 'auth/assets/img/generic/default.png' %}"
+                            alt=""/><span class="label-text"> Transparent</span></label>
                 </div>
                 <div class="col-6">
                     <input class="btn-check" id="navbar-style-inverted" type="radio" name="navbarStyle" value="inverted"
                            data-theme-control="navbarStyle"/>
                     <label class="btn d-block w-100 btn-navbar-style fs--1" for="navbar-style-inverted"> <img
-                            class="img-fluid img-prototype" src="assets/img/generic/inverted.png" alt=""/><span
-                            class="label-text"> Inverted</span></label>
+                            class="img-fluid img-prototype" src="{% static 'auth/assets/img/generic/inverted.png' %}"
+                            alt=""/><span class="label-text"> Inverted</span></label>
                 </div>
                 <div class="col-6">
                     <input class="btn-check" id="navbar-style-card" type="radio" name="navbarStyle" value="card"
                            data-theme-control="navbarStyle"/>
                     <label class="btn d-block w-100 btn-navbar-style fs--1" for="navbar-style-card"> <img
-                            class="img-fluid img-prototype" src="assets/img/generic/card.png" alt=""/><span
-                            class="label-text"> Card</span></label>
+                            class="img-fluid img-prototype" src="{% static 'auth/assets/img/generic/card.png' %}"
+                            alt=""/><span class="label-text"> Card</span></label>
                 </div>
                 <div class="col-6">
                     <input class="btn-check" id="navbar-style-vibrant" type="radio" name="navbarStyle" value="vibrant"
                            data-theme-control="navbarStyle"/>
                     <label class="btn d-block w-100 btn-navbar-style fs--1" for="navbar-style-vibrant"> <img
-                            class="img-fluid img-prototype" src="assets/img/generic/vibrant.png" alt=""/><span
-                            class="label-text"> Vibrant</span></label>
+                            class="img-fluid img-prototype" src="{% static 'auth/assets/img/generic/vibrant.png' %}"
+                            alt=""/><span class="label-text"> Vibrant</span></label>
                 </div>
             </div>
         </div>

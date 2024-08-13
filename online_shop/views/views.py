@@ -9,6 +9,9 @@ from online_shop.models import Category, Product, Comment
 from django.db.models import Q
 
 
+# Create your views here.
+
+
 def product_list(request, category_slug: Optional[str] = None):
     categories = Category.objects.all().order_by('id')
     search = request.GET.get('q')
@@ -48,6 +51,7 @@ def product_list(request, category_slug: Optional[str] = None):
 
 def product_detail(request, product_id):
     categories = Category.objects.all()
+
     product = Product.objects.get(id=product_id)
     min_price = product.price * 0.2
     max_price = product.price * 1.8
@@ -63,6 +67,20 @@ def product_detail(request, product_id):
 
     return render(request, 'online_shop/detail.html', context)
 
+
+# def add_comment(request, product_id):
+#     product = get_object_or_404(Product, id=product_id)
+#     if request.method == 'POST':
+#         name = request.POST.get('name')
+#         email = request.POST.get('email')
+#         body = request.POST.get('body')
+#         comment = Comment(name=name, email=email, body=body)
+#         comment.product = product
+#         comment.save()
+#         return redirect('product_detail', product_id)
+#     else:
+#         pass
+#     return render(request, 'online_shop/detail.html')
 
 def add_comment(request, product_id):
     product = get_object_or_404(Product, id=product_id)
